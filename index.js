@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+// jsonwebtoken
 const jwt = require('jsonwebtoken');
 const app = express();
 require("dotenv").config();
@@ -14,8 +15,6 @@ app.get("/", (req, res) => {
 app.use(cors());
 app.use(express.json());
 
-// warehousebduser1
-// Afg7GM5EJiWWE8YD
 
 function verifyJWT(req, res, next) {
   const authHeader = req.headers.authorization;
@@ -41,13 +40,6 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true,
   serverApi: ServerApiVersion.v1,
 });
-// client.connect((err) => {
-//   const collection = client.db("test").collection("devices");
-//   console.log("DB connected");
-//   // perform actions on the collection object
-//   client.close();
-// });
-
 async function run() {
   try {
     await client.connect();
@@ -112,19 +104,11 @@ async function run() {
       res.send(items);
     });
 
-    // app.get("/items", async (req, res) => {
-    //   const query = {};
-    //   const cursor = itemsCollection.find(query);
-    //   const items = await cursor.toArray();
-    //   res.send(items);
-    // });
-
     app.post("/items", async (req, res) => {
       const item = req.body;
       const result = await itemsCollection.insertOne(item);
       res.send(result);
     });
-    //Updated for Heroku API testing
 
     // DELETE one Item
     app.delete("/items/:id", async (req, res) => {
